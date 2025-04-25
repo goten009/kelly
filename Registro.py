@@ -3,15 +3,14 @@ import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 import pandas as pd
+import json
 
-# === CONFIGURACIÓN DE GOOGLE SHEETS ===
+# === CONFIGURACIÓN DE GOOGLE SHEETS DESDE SECRETS ===
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-CREDS_FILE = "focal-slice-457523-d7-f2fa1a38acaa.json"
-SPREADSHEET_NAME = "Control Apuestas Rentables"
-
-creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPE)
+info = json.loads(st.secrets["GSPREAD_CREDENTIALS"])
+creds = Credentials.from_service_account_info(info, scopes=SCOPE)
 client = gspread.authorize(creds)
-sheet = client.open(SPREADSHEET_NAME).sheet1
+sheet = client.open("Control Apuestas Rentables").sheet1
 
 # === FUNCIONES ===
 def obtener_fila_libre():
